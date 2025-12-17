@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS laxative_types (
+  laxative_type_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE
+);

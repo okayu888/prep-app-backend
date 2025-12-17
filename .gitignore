@@ -1,0 +1,18 @@
+# SQLite DB files (NEVER commit)
+*.db
+*.sqlite
+*.sqlite3
+
+# Python venv
+.venv/
+
+# Secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
