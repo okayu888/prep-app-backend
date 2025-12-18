@@ -196,7 +196,7 @@ def add_laxative(exam_day_id: int):
         db.commit()
         return {"ok": True}, 201
 
-# 確認用API
+# 確認用API(本番では削除)
 @app.get("/debug/db-info")
 def debug_db_info():
     db = get_db()
@@ -214,6 +214,9 @@ def debug_db_info():
         "tables": [r["name"] for r in rows]
     })
         
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
