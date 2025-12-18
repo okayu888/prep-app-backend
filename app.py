@@ -196,11 +196,26 @@ def add_laxative(exam_day_id: int):
         db.commit()
         return {"ok": True}, 201
 
+# 確認用API
+@app.get("/debug/db-info")
+def debug_db_info():
+    db = get_db()
+
+    # 今 Flask が見ている DB のパス
+    db_path = os.environ.get("SQLITE_DB_PATH", DEFAULT_DB_PATH)
+
+    # テーブル一覧を取得
+    rows = db.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'"
+    ).fetchall()
+
+    return jsonify({
+        "db_path": db_path,
+        "tables": [r["name"] for r in rows]
+    })
         
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
