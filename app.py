@@ -22,25 +22,27 @@ def close_db(_e=None):
     if db is not None:
         db.close()
 
+from flask import Flask, jsonify
+from flask_cors import CORS
 
-def create_app():
-    app = Flask(__name__)
-    CORS(app)  # 卒制デモは全許可。公開時は特定ドメインに絞るのが安全
+app = Flask(__name__)
+CORS(app)  # ★ ローカル開発用：すべて許可
 
-    app.teardown_appcontext(close_db)
+app.teardown_appcontext(close_db)
 
-    @app.get("/health")
-    def health():
-        return {"ok": True}
+@app.get("/health")
+def health():
+    return {"ok": True}
 
-    # 便レベル（提示画像）の一覧
-    @app.get("/api/stool-conditions")
-    def stool_conditions():
-        db = get_db()
-        rows = db.execute(
-            "SELECT condition_id, label, image_path FROM stool_conditions ORDER BY condition_id"
-        ).fetchall()
-        return jsonify([dict(r) for r in rows])
+# 便レベル（提示画像）の一覧
+@app.get("/api/stool-conditions")
+def stool_conditions():
+    db = get_db()
+    rows = db.execute(
+        "SELECT condition_id, label, image_path FROM stool_conditions"
+    ).fetchall()
+    return jsonify([dict(r) for r in rows])
+    
 
     # 症状マスタ（腹痛/嘔気/嘔吐など）
     @app.get("/api/symptoms")
@@ -195,7 +197,7 @@ def create_app():
     return app
 
 
-app = create_app()
+
 
 if __name__ == "__main__":
     app.run(debug=True)
