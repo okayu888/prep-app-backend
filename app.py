@@ -6,6 +6,8 @@ from flask_cors import CORS
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_DB_PATH = os.path.join(BASE_DIR, "db", "prep.db")
 
+app = Flask(__name__)
+CORS(app)  # ★ ローカル開発用：すべて許可
 
 def get_db():
     if "db" not in g:
@@ -16,17 +18,10 @@ def get_db():
         g.db = conn
     return g.db
 
-
-def close_db(_e=None):
+def close_db(e=None):
     db = g.pop("db", None)
     if db is not None:
         db.close()
-
-from flask import Flask, jsonify
-from flask_cors import CORS
-
-app = Flask(__name__)
-CORS(app)  # ★ ローカル開発用：すべて許可
 
 app.teardown_appcontext(close_db)
 
