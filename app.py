@@ -140,7 +140,8 @@ def add_bm(exam_day_id: int):
         db = get_db()
         db.execute(
             """
-            INSERT INTO stool_records (exam_day_id, recorded_at, condition_id, bm_no)
+            INSERT INTO stool_records (exam_id, recorded_at, condition_id, bm_no)
+
             VALUES (?, ?, ?, ?)
             """,
             (exam_day_id, recorded_at, int(condition_id), bm_no),
