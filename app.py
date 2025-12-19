@@ -6,7 +6,12 @@ from flask_cors import CORS
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_DB_PATH = os.path.join(BASE_DIR, "db", "prep.db")
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_folder="static",
+    static_url_path="/static"
+)
+
 CORS(app)  # ★ ローカル開発用：すべて許可
 
 def get_db():
@@ -231,6 +236,9 @@ def debug_db_info():
         "tables": [r["name"] for r in rows]
     })
         
+
+import os
+
 
 
 
