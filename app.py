@@ -191,6 +191,28 @@ def add_laxative(exam_day_id: int):
         db.commit()
         return {"ok": True}, 201
 
+@app.get("/api/exam-days/<int:exam_day_id>/laxatives")
+def get_laxatives(exam_day_id: int):
+        db = get_db()
+        rows = db.execute(
+        """
+        SELECT
+            l.laxative_id,
+            l.dose_no,
+            l.taken_at,
+            lt.name AS laxative_name
+        FROM laxatives l
+        LEFT JOIN laxative_types lt
+            ON l.laxative_type_id = lt.laxative_type_id
+        WHERE l.exam_day_id = ?
+        ORDER BY l.dose_no
+        """,
+        (exam_day_id,)
+        ).fetchall()
+
+        return jsonify([dict(row) for row in rows])
+
+
 # 確認用API(本番では削除)
 @app.get("/debug/db-info")
 def debug_db_info():
